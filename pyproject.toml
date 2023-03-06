@@ -1,0 +1,31 @@
+[tool.poetry]
+authors = ["Chavithra PARANA <chavithra@gmail.com>"]
+classifiers = [
+    "Framework :: Pytest",
+]
+description = "Pytest plugin, meant to facilitate unit tests writing for tools consumming Web APIs."
+license = "MIT"
+name = "pytest-recorder"
+packages = [{include = "pytest_recorder"}]
+readme = "README.md"
+version = "0.1.0"
+
+[tool.poetry.dependencies]
+python = "^3.8"
+vcrpy = "^4.2.1"
+
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^6.2.2"
+black = "^23.1.0"
+pylint = "^2.16.3"
+mypy = "^1.0.1"
+pytest-mock = "^3.10.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.plugins."pytest11"]
+pytest_recorder_recorder = "pytest_recorder.recorder"
+pytest_recorder_plugin = "pytest_recorder.plugin"
