@@ -71,32 +71,21 @@ class RecordHandler:
     @classmethod
     def jsonify_and_hash_record_data(cls, record_model: RecordModel) -> RecordModel:
         object_list = record_model.object_list
-        data_json_list = [json.dumps(data, sort_keys=True) for data in object_list]
+        object_json_list = [json.dumps(data, sort_keys=True) for data in object_list]
 
         if record_model.hash_only:
-            data_hash_list = [
-                sha256(data.encode()).hexdigest() for data in data_json_list
+            object_hash_list = [
+                sha256(obj.encode()).hexdigest() for obj in object_json_list
             ]
             record_model = RecordModel(
-                object_list=data_hash_list,
+                object_list=object_hash_list,
                 hash_only=True,
             )
-
-            for data in data_hash_list:
-                print(data, sha256(data.encode()).hexdigest())
         else:
             record_model = RecordModel(
-                object_list=data_json_list,
+                object_list=object_json_list,
                 hash_only=False,
             )
-
-            for data in data_json_list:
-                print(data, sha256(data.encode()).hexdigest())
-
-        record_model = RecordModel(
-            object_list=data_json_list,
-            hash_only=False,
-        )
 
         return record_model
 
@@ -104,9 +93,6 @@ class RecordHandler:
     def persist(cls, record_model: RecordModel, record_file_path: Path):
         logger.debug("Making record folder : %s", record_file_path.parent)
         record_file_path.parent.mkdir(parents=True, exist_ok=True)
-
-        if record_model.hash_only:
-            record_model = cls.hash_record_data(record_model=record_model)
 
         with record_file_path.open(mode="w", encoding="utf-8") as file:
             logger.debug("Writing record file : %s", record_file_path)
@@ -164,11 +150,11 @@ class RecordHandler:
 
 class RecordFilePathBuilder:
     @staticmethod
-    def build(test_module_path: Path, test_function: str, hash_only: str) -> Path:
+    def build(test_module_path: Path, test_function: str, hash_only: bool) -> Path:
         test_module = test_module_path.stem
 
         data_folder_name = (
-            f"{RecordType.object}_hash" if hash_only else RecordType.object
+            f"{RecordType.object}_hash" if hash_only else RecordType.object.name
         )
         data_file_folder_path = test_module_path.parent / "record" / data_folder_name
         data_file_name = f"{test_function}.json"
@@ -191,7 +177,7 @@ def record_context_manager(
     yield current_record
 
     if record_with_out_hash:
-        current_record.hash_only = True
+        current_record.hash_only = False
 
     record_file_path = RecordFilePathBuilder.build(
         test_module_path=test_module_path,
