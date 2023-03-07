@@ -5,7 +5,7 @@ from pathlib import Path
 import pytest
 
 # IMPORT INTERNAL
-from pytest_recorder.recorder import record_fixture
+from pytest_recorder.recorder import record_context_manager
 
 
 def build_mock_request(
@@ -46,7 +46,7 @@ def test_record_fixture_persist_with_hash(mocker, tmp_path):
         record_without_hash=False,
     )
 
-    record_fixture_generator = record_fixture(request=mock_request)
+    record_fixture_generator = record_context_manager(request=mock_request)
     record = next(record_fixture_generator)
 
     record.add_verify(True)
@@ -79,7 +79,7 @@ def test_record_fixture_persist_no_hash(mocker, tmp_path):
         record_without_hash=True,
     )
 
-    record_fixture_generator = record_fixture(request=mock_request)
+    record_fixture_generator = record_context_manager(request=mock_request)
     record = next(record_fixture_generator)
 
     record.add_verify(True)

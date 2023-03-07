@@ -177,8 +177,7 @@ class RecordFilePathBuilder:
         return data_file_path
 
 
-@pytest.fixture(name="record")
-def record_fixture(
+def record_context_manager(
     request: SubRequest,
 ):
     record_type = request.config.getoption("--record")
@@ -226,3 +225,6 @@ def record_fixture(
         raise AttributeError(
             f"No comparison possible since there is no record file : {record_file_path}",
         )
+
+
+record_fixture = pytest.fixture(name="record")(record_context_manager)
