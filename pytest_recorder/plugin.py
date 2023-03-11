@@ -20,11 +20,11 @@ def pytest_addoption(parser: Parser) -> None:
         "--record-no-hash",
         action="store_true",
         default=False,
-        help="Forces the following feature to save the full records and not only the hash : record_screen, recorder.",
+        help="Avoid hashing the content before saving the records, apply to : object and screen.",
     )
     group.addoption(
         "--record-no-overwrite",
         action="store_true",
         default=False,
-        help="Only saves the current record if there is no existing records.",
+        help="Avoid rewriting existing records, apply to : http, object, screen, time.",
     )

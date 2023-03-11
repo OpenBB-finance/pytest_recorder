@@ -122,7 +122,7 @@ class ObjectRecorderHandler:
         return record_model_loaded
 
     @staticmethod
-    def compare_records(
+    def verify(
         current_record: ObjectRecorder,
         loaded_record: ObjectRecorder,
         record_file_path: Path,
@@ -204,14 +204,14 @@ def record_context_manager(
             record_file_path=record_file_path,
         )
 
-        ObjectRecorderHandler.compare_records(
+        ObjectRecorderHandler.verify(
             current_record=current_record_formatted,
             loaded_record=loaded_record,
             record_file_path=record_file_path,
         )
     else:
         raise AttributeError(
-            f"No comparison possible since there is no record file : {record_file_path}",
+            f"No HTTP requests recording to compare with the current result : {record_file_path}",
         )
 
 

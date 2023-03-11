@@ -70,6 +70,10 @@ def record_http_context_manager(
 
             with vcr_object.use_cassette(record_file_path) as cassette:
                 yield cassette
+        else:
+            raise AttributeError(
+                f"No comparison possible since there is no vcr cassette : {record_file_path}",
+            )
     else:
         yield None
 
