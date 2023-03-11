@@ -68,7 +68,7 @@ def test_some_test(record):
 
 USAGE
 
-pytest [FILE] [--record[=none,all,http,object,screen,time]] [--record-no-overwrite] [--record-no-hash] [--record-no-verify]
+pytest [FILE] [--record[=none,all,http,object,screen,time]] [--record-no-overwrite] [--record-no-hash]
 
 FILES
 
