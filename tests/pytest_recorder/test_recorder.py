@@ -5,7 +5,7 @@ from pathlib import Path
 import pytest
 
 # IMPORT INTERNAL
-from pytest_recorder.recorder import record_context_manager
+from pytest_recorder.record_verify_object import record_context_manager
 
 
 def build_mock_request(
@@ -13,17 +13,17 @@ def build_mock_request(
     test_module_path: Path,
     test_function_name: str,
     record_type: str,
-    record_add_only: bool,
-    record_without_hash: bool,
+    record_no_overwrite: bool,
+    record_no_hash: bool,
 ):
     def config_getoption(name):
         value = None
         if name == "--record":
             value = record_type
-        elif name == "--record-add-only":
-            return record_add_only
-        elif name == "--record-without-hash":
-            return record_without_hash
+        elif name == "--record-no-overwrite":
+            return record_no_overwrite
+        elif name == "--record-no-hash":
+            return record_no_hash
         return value
 
     attrs = {
@@ -42,8 +42,8 @@ def test_record_fixture_persist_with_hash(mocker, tmp_path):
         test_module_path=tmp_path / "mock_test_module.py",
         test_function_name="mock_test_function",
         record_type="all",
-        record_add_only=False,
-        record_without_hash=False,
+        record_no_overwrite=False,
+        record_no_hash=False,
     )
 
     record_fixture_generator = record_context_manager(request=mock_request)
@@ -75,8 +75,8 @@ def test_record_fixture_persist_no_hash(mocker, tmp_path):
         test_module_path=tmp_path / "mock_test_module.py",
         test_function_name="mock_test_function",
         record_type="all",
-        record_add_only=False,
-        record_without_hash=True,
+        record_no_overwrite=False,
+        record_no_hash=True,
     )
 
     record_fixture_generator = record_context_manager(request=mock_request)

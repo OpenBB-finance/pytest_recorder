@@ -17,7 +17,7 @@ from pytest_recorder.record_type import RecordType
 logger = logging.getLogger(__name__)
 
 
-class RecordModel:
+class ObjectRecorder:
     @property
     def hash_only(self) -> bool:
         return self._hash_only
@@ -44,32 +44,34 @@ class RecordModel:
         self._object_list = object_list or []
 
 
-class RecordHandler:
+class ObjectRecorderHandler:
     @staticmethod
-    def jsonify_record_data(record_model: RecordModel) -> RecordModel:
+    def jsonify_record_data(record_model: ObjectRecorder) -> ObjectRecorder:
         object_list = record_model.object_list
         data_str_list = [json.dumps(data, sort_keys=True) for data in object_list]
 
-        record_model = RecordModel(
+        record_model = ObjectRecorder(
             object_list=data_str_list,
             hash_only=True,
         )
         return record_model
 
     @staticmethod
-    def hash_record_data(record_model: RecordModel) -> RecordModel:
+    def hash_record_data(record_model: ObjectRecorder) -> ObjectRecorder:
         object_list = record_model.object_list
         data_str_list = [json.dumps(data, sort_keys=True) for data in object_list]
         data_hash_list = [sha256(data.encode()).hexdigest() for data in data_str_list]
 
-        record_model = RecordModel(
+        record_model = ObjectRecorder(
             object_list=data_hash_list,
             hash_only=True,
         )
         return record_model
 
     @classmethod
-    def jsonify_and_hash_record_data(cls, record_model: RecordModel) -> RecordModel:
+    def jsonify_and_hash_record_data(
+        cls, record_model: ObjectRecorder
+    ) -> ObjectRecorder:
         object_list = record_model.object_list
         object_json_list = [json.dumps(data, sort_keys=True) for data in object_list]
 
@@ -77,12 +79,12 @@ class RecordHandler:
             object_hash_list = [
                 sha256(obj.encode()).hexdigest() for obj in object_json_list
             ]
-            record_model = RecordModel(
+            record_model = ObjectRecorder(
                 object_list=object_hash_list,
                 hash_only=True,
             )
         else:
-            record_model = RecordModel(
+            record_model = ObjectRecorder(
                 object_list=object_json_list,
                 hash_only=False,
             )
@@ -90,7 +92,7 @@ class RecordHandler:
         return record_model
 
     @classmethod
-    def persist(cls, record_model: RecordModel, record_file_path: Path):
+    def persist(cls, record_model: ObjectRecorder, record_file_path: Path):
         logger.debug("Making record folder : %s", record_file_path.parent)
         record_file_path.parent.mkdir(parents=True, exist_ok=True)
 
@@ -102,7 +104,7 @@ class RecordHandler:
     def load_record_model(
         hash_only: bool,
         record_file_path: Path,
-    ) -> RecordModel:
+    ) -> ObjectRecorder:
         if record_file_path.exists():
             logger.debug("Loading record file : %s", record_file_path)
             with record_file_path.open(mode="r", encoding="utf-8") as file:
@@ -112,7 +114,7 @@ class RecordHandler:
                 f"Cannot load record file : {record_file_path}",
             )
 
-        record_model_loaded = RecordModel(
+        record_model_loaded = ObjectRecorder(
             object_list=object_list,
             hash_only=hash_only,
         )
@@ -121,8 +123,8 @@ class RecordHandler:
 
     @staticmethod
     def compare_records(
-        current_record: RecordModel,
-        loaded_record: RecordModel,
+        current_record: ObjectRecorder,
+        loaded_record: ObjectRecorder,
         record_file_path: Path,
     ):
         current_data_list = current_record.object_list
@@ -166,17 +168,17 @@ class RecordFilePathBuilder:
 def record_context_manager(
     request: SubRequest,
 ):
+    record_no_overwrite = request.config.getoption("--record-no-overwrite")
+    record_no_hash = request.config.getoption("--record-no-hash")
     record_type = request.config.getoption("--record")
-    record_with_out_hash = request.config.getoption("--record-without-hash")
-    record_add_only = request.config.getoption("--record-add-only")
-    test_module_path = Path(request.node.fspath)  # PYTEST 6.2.2 COMPATIBILITY
     test_function = request.node.name
+    test_module_path = Path(request.node.fspath)  # PYTEST 6.2.2 COMPATIBILITY
 
-    current_record = RecordModel()
+    current_record = ObjectRecorder()
 
     yield current_record
 
-    if record_with_out_hash:
+    if record_no_hash:
         current_record.hash_only = False
 
     record_file_path = RecordFilePathBuilder.build(
@@ -185,24 +187,24 @@ def record_context_manager(
         hash_only=current_record.hash_only,
     )
 
-    current_record_formatted = RecordHandler.jsonify_and_hash_record_data(
+    current_record_formatted = ObjectRecorderHandler.jsonify_and_hash_record_data(
         record_model=current_record,
     )
 
     if (RecordType.all in record_type or RecordType.object in record_type) and not (
-        record_file_path.exists() and record_add_only
+        record_file_path.exists() and record_no_overwrite
     ):
-        RecordHandler.persist(
+        ObjectRecorderHandler.persist(
             record_file_path=record_file_path,
             record_model=current_record_formatted,
         )
     elif record_file_path.exists():
-        loaded_record = RecordHandler.load_record_model(
+        loaded_record = ObjectRecorderHandler.load_record_model(
             hash_only=current_record.hash_only,
             record_file_path=record_file_path,
         )
 
-        RecordHandler.compare_records(
+        ObjectRecorderHandler.compare_records(
             current_record=current_record_formatted,
             loaded_record=loaded_record,
             record_file_path=record_file_path,

@@ -52,7 +52,7 @@ Compare the current recorder object data to the previous one and raise and excep
 CODE
 
 ```python
-@pytest.mark.record_http(hash=False)
+@pytest.mark.record_http
 @pytest.mark.record_time(date=datetime(2023, 3, 1, 12, 0, 0), tic=False)
 @pytest.mark.record_verify_screen(hash=True)
 def test_some_test(record):
@@ -68,7 +68,7 @@ def test_some_test(record):
 
 USAGE
 
-pytest [FILE] [--record[=none,all,http,object,screen,time]] [--record-add-only] [--record-without-hash] 
+pytest [FILE] [--record[=none,all,http,object,screen,time]] [--record-no-overwrite] [--record-no-hash] [--record-no-verify]
 
 FILES
 

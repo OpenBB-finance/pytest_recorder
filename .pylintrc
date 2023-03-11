@@ -308,7 +308,7 @@ property-classes=abc.abstractproperty
 variable-rgx=(([a-z][a-z0-9_]{2,30})|(_[a-z0-9_]*))$
 
 
-[IMPORT]
+[IMPORTS]
 
 # Allow wildcard imports from modules that define __all__.
 allow-wildcard-with-all=no

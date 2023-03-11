@@ -27,5 +27,7 @@ requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.plugins."pytest11"]
-pytest_recorder_recorder = "pytest_recorder.recorder"
 pytest_recorder_plugin = "pytest_recorder.plugin"
+pytest_recorder_record_http = "pytest_recorder.record_http"
+pytest_recorder_record_verify_object = "pytest_recorder.record_verify_object"
+pytest_recorder_record_verify_screen = "pytest_recorder.record_verify_screen"

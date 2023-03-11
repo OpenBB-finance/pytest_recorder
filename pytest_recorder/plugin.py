@@ -17,13 +17,13 @@ def pytest_addoption(parser: Parser) -> None:
         help="Records the listed elements (default: none).",
     )
     group.addoption(
-        "--record-without-hash",
+        "--record-no-hash",
         action="store_true",
         default=False,
         help="Forces the following feature to save the full records and not only the hash : record_screen, recorder.",
     )
     group.addoption(
-        "--record-add-only",
+        "--record-no-overwrite",
         action="store_true",
         default=False,
         help="Only saves the current record if there is no existing records.",
