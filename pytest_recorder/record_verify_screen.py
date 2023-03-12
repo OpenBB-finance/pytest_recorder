@@ -74,15 +74,15 @@ class CaptureResultHandler:
     @staticmethod
     def verify(
         capture_result: CaptureResult,
-        loaded_capture_result: CaptureResult,
+        capture_result_loaded: CaptureResult,
         record_file_path: Path,
     ):
-        if capture_result.out != loaded_capture_result.out:
+        if capture_result.out != capture_result_loaded.out:
             raise AttributeError(
                 "Recorded screen output doesn't match current screen output:\n"
                 f"\nRECORD_FILE_PATH =\n{record_file_path}\n"
                 f"\nCURRENT = {capture_result.out}\n"
-                f"\nLOADED  = {loaded_capture_result.out}\n"
+                f"\nLOADED  = {capture_result_loaded.out}\n"
             )
 
 
@@ -91,16 +91,14 @@ class RecordFilePathBuilder:
     def build(test_module_path: Path, test_function: str) -> Path:
         test_module = test_module_path.stem
 
-        cassette_folder_name = RecordType.screen.name
-        cassette_file_folder_path = (
-            test_module_path.parent / "record" / cassette_folder_name
+        record_folder_name = RecordType.screen.name
+        record_file_folder_path = (
+            test_module_path.parent / "record" / record_folder_name
         )
-        cassette_file_name = f"{test_function}.json"
-        cassette_file_path = (
-            cassette_file_folder_path / test_module / cassette_file_name
-        )
+        record_file_name = f"{test_function}.json"
+        record_file_path = record_file_folder_path / test_module / record_file_name
 
-        return cassette_file_path
+        return record_file_path
 
 
 def record_screen_context_manager(
@@ -128,12 +126,12 @@ def record_screen_context_manager(
                 err=SysCapture(2),
             )
             global_capturing.start_capturing()
-            yield
+            yield None
             capture_result = global_capturing.readouterr()
             global_capturing.stop_capturing()
         else:
             capsys = request.getfixturevalue("capsys")
-            yield
+            yield None
             capture_result = capsys.readouterr()
 
         if not record_no_hash:
@@ -150,12 +148,12 @@ def record_screen_context_manager(
                 record_file_path=record_file_path,
             )
         elif record_file_path.exists():
-            loaded_capture_result = CaptureResultHandler.load_capture_result(
+            capture_result_loaded = CaptureResultHandler.load_capture_result(
                 record_file_path=record_file_path
             )
             CaptureResultHandler.verify(
                 capture_result=capture_result,
-                loaded_capture_result=loaded_capture_result,
+                capture_result_loaded=capture_result_loaded,
                 record_file_path=record_file_path,
             )
         else:

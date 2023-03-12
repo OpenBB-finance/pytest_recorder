@@ -13,7 +13,7 @@ from pytest_recorder.record_type import RecordType
 def pytest_configure(config):
     config.addinivalue_line(
         "markers",
-        "record_http: record the text output on the screen and compare it on next run.",
+        "record_http: Records HTTP request or the last recorded requests.",
     )
 
 
@@ -22,16 +22,14 @@ class RecordFilePathBuilder:
     def build(test_module_path: Path, test_function: str) -> Path:
         test_module = test_module_path.stem
 
-        cassette_folder_name = RecordType.http.name
-        cassette_file_folder_path = (
-            test_module_path.parent / "record" / cassette_folder_name
+        record_folder_name = RecordType.http.name
+        record_file_folder_path = (
+            test_module_path.parent / "record" / record_folder_name
         )
-        cassette_file_name = f"{test_function}.yaml"
-        cassette_file_path = (
-            cassette_file_folder_path / test_module / cassette_file_name
-        )
+        record_file_name = f"{test_function}.yaml"
+        record_file_path = record_file_folder_path / test_module / record_file_name
 
-        return cassette_file_path
+        return record_file_path
 
 
 def record_http_context_manager(
