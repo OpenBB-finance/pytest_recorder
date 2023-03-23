@@ -12,7 +12,7 @@ from pytest_recorder.record_type import RecordType
 
 
 @pytest.fixture(name="vcr_config")
-def vcr_config_fixture() -> Dict:
+def vcr_config_fixture() -> Dict[str, Any]:
     return {}
 
 
@@ -40,7 +40,7 @@ class RecordFilePathBuilder:
 
 def record_http_context_manager(
     request: SubRequest,
-    vcr_config: Dict[Any],
+    vcr_config: Dict[str, Any],
 ):
     marker = request.node.get_closest_marker("record_http")
 
