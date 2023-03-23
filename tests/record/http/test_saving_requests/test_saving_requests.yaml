@@ -1,0 +1,126 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://vcrpy.readthedocs.io/en/latest/configuration.html?apikey=MOCK_API_KEY
+  response:
+    body:
+      string: !!binary |
+        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
+        r+pO+2gA
+    headers:
+      CDN-Cache-Control:
+      - public
+      CF-Cache-Status:
+      - MISS
+      CF-RAY:
+      - 7ac67642ebfb22b2-CDG
+      Cache-Control:
+      - max-age=1200
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - br
+      Content-Type:
+      - text/html
+      Date:
+      - Thu, 23 Mar 2023 11:51:21 GMT
+      ETag:
+      - W/"ee5a2c28886ea36055660e2ac124da24"
+      Last-Modified:
+      - Wed, 31 Aug 2022 19:29:01 GMT
+      Referrer-Policy:
+      - no-referrer-when-downgrade
+      Server:
+      - cloudflare
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      X-Backend:
+      - web-i-092b714578b6b49cc
+      X-Content-Type-Options:
+      - nosniff
+      X-RTD-Domain:
+      - vcrpy.readthedocs.io
+      X-RTD-Path:
+      - /proxito/html/vcrpy/latest/configuration.html
+      X-RTD-Project:
+      - vcrpy
+      X-RTD-Project-Method:
+      - public_domain
+      X-RTD-Version:
+      - latest
+      X-RTD-Version-Method:
+      - path
+      X-Served:
+      - Nginx-Proxito-Sendfile
+      alt-svc:
+      - h3=":443"; ma=86400, h3-29=":443"; ma=86400
+      x-amz-id-2:
+      - UkUWxKu0CHK2420sFwWSbx6dxBeXIjTNHtI9bpPc8fKgKF+a53/1CEGyiWjsrxT315Ts51l+jSQ=
+      x-amz-request-id:
+      - 77T3METNQ41AX60D
+      x-amz-server-side-encryption:
+      - AES256
+    status:
+      code: 200
+      message: OK
+version: 1
