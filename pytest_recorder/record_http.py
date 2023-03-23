@@ -1,5 +1,6 @@
 # IMPORT STANDARD
 from pathlib import Path
+from typing import Any, Dict
 
 # IMPORT THIRD-PARTY
 import pytest
@@ -8,6 +9,11 @@ from _pytest.fixtures import SubRequest
 
 # IMPORT INTERNAL
 from pytest_recorder.record_type import RecordType
+
+
+@pytest.fixture(name="vcr_config")
+def vcr_config_fixture() -> Dict:
+    return {}
 
 
 def pytest_configure(config):
@@ -34,6 +40,7 @@ class RecordFilePathBuilder:
 
 def record_http_context_manager(
     request: SubRequest,
+    vcr_config: Dict[Any],
 ):
     marker = request.node.get_closest_marker("record_http")
 
@@ -56,6 +63,7 @@ def record_http_context_manager(
             vcr_object = vcr.VCR(
                 cassette_library_dir=str(record_file_path.parent),
                 record_mode="once",
+                **vcr_config,
             )
 
             with vcr_object.use_cassette(record_file_path.name) as cassette:
@@ -64,6 +72,7 @@ def record_http_context_manager(
             vcr_object = vcr.VCR(
                 cassette_library_dir=str(record_file_path.parent),
                 record_mode="none",
+                **vcr_config,
             )
 
             with vcr_object.use_cassette(record_file_path) as cassette:
