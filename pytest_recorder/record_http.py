@@ -75,7 +75,7 @@ def record_http_context_manager(
                 **vcr_config,
             )
 
-            with vcr_object.use_cassette(record_file_path) as cassette:
+            with vcr_object.use_cassette(record_file_path.name)) as cassette:
                 yield cassette
         else:
             raise AttributeError(
