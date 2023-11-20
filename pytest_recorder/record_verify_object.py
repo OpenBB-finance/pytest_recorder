@@ -13,7 +13,6 @@ from _pytest.fixtures import SubRequest
 # IMPORT INTERNAL
 from pytest_recorder.record_type import RecordType
 
-
 logger = logging.getLogger(__name__)
 
 
@@ -96,7 +95,7 @@ class ObjectCollectorHandler:
         logger.debug("Making record folder : %s", record_file_path.parent)
         record_file_path.parent.mkdir(parents=True, exist_ok=True)
 
-        with record_file_path.open(mode="w", encoding="utf-8") as file:
+        with record_file_path.open(mode="w", encoding="utf-8", newline="\n") as file:
             logger.debug("Writing record file : %s", record_file_path)
             json.dump(record_model.object_list, file)
 
@@ -107,7 +106,9 @@ class ObjectCollectorHandler:
     ) -> ObjectCollector:
         if record_file_path.exists():
             logger.debug("Loading record file : %s", record_file_path)
-            with record_file_path.open(mode="r", encoding="utf-8") as file:
+            with record_file_path.open(
+                mode="r", encoding="utf-8", newline="\n"
+            ) as file:
                 object_list = json.load(file)
         else:
             raise AttributeError(

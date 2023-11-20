@@ -6,12 +6,11 @@ from pathlib import Path
 
 # IMPORT THIRD-PARTY
 import pytest
-from _pytest.capture import MultiCapture, SysCapture, CaptureResult
+from _pytest.capture import CaptureResult, MultiCapture, SysCapture
 from _pytest.fixtures import SubRequest
 
 # IMPORT INTERNAL
 from pytest_recorder.record_type import RecordType
-
 
 logger = logging.getLogger(__name__)
 
@@ -37,7 +36,9 @@ class CaptureResultHandler:
     def load_capture_result(record_file_path: Path) -> CaptureResult:
         if record_file_path.exists():
             logger.debug("Loading record file : %s", record_file_path)
-            with record_file_path.open(mode="r", encoding="utf-8") as file:
+            with record_file_path.open(
+                mode="r", encoding="utf-8", newline="\n"
+            ) as file:
                 data = json.load(file)
 
             if isinstance(data, dict):
@@ -67,7 +68,7 @@ class CaptureResultHandler:
             "out": capture_result.out,
             "err": capture_result.err,
         }
-        with record_file_path.open(mode="w", encoding="utf-8") as file:
+        with record_file_path.open(mode="w", encoding="utf-8", newline="\n") as file:
             logger.debug("Writing record file : %s", record_file_path)
             json.dump(data, file)
 

@@ -12,7 +12,6 @@ from _pytest.fixtures import SubRequest
 # IMPORT INTERNAL
 from pytest_recorder.record_type import RecordType
 
-
 logger = logging.getLogger(__name__)
 
 
@@ -42,7 +41,9 @@ class TravelHandler:
     def load_travel(record_file_path: Path) -> TravelModel:
         if record_file_path.exists():
             logger.debug("Loading record file : %s", record_file_path)
-            with record_file_path.open(mode="r", encoding="utf-8") as file:
+            with record_file_path.open(
+                mode="r", encoding="utf-8", newline="\n"
+            ) as file:
                 data = json.load(file)
 
             if isinstance(data, dict) and "isoformat" in data and "tick" in data:
@@ -75,7 +76,7 @@ class TravelHandler:
             "isoformat": travel.dt.isoformat(),
             "tick": travel.tick,
         }
-        with record_file_path.open(mode="w", encoding="utf-8") as file:
+        with record_file_path.open(mode="w", encoding="utf-8", newline="\n") as file:
             logger.debug("Writing record file : %s", record_file_path)
             json.dump(data, file)
 
