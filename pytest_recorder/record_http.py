@@ -30,7 +30,6 @@ class VCRFilesystemPersister(FilesystemPersister):
         data = serialize(cassette_dict, serializer)
         # if cassette path is already Path this is no operation
         cassette_path = Path(cassette_path).resolve()
-
         cassette_path.parent.mkdir(parents=True, exist_ok=True)
 
         with cassette_path.open("w", encoding="utf-8", newline="\n") as f:
