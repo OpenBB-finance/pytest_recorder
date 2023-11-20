@@ -6,6 +6,7 @@ from typing import Any, Dict
 import pytest
 import vcr
 from _pytest.fixtures import SubRequest
+from vcr.persisters.filesystem import FilesystemPersister, serialize
 
 # IMPORT INTERNAL
 from pytest_recorder.record_type import RecordType
@@ -21,6 +22,19 @@ def pytest_configure(config):
         "markers",
         "record_http: Records HTTP request or the last recorded requests.",
     )
+
+
+class VCRFilesystemPersister(FilesystemPersister):
+    @staticmethod
+    def save_cassette(cassette_path, cassette_dict, serializer):
+        data = serialize(cassette_dict, serializer)
+        # if cassette path is already Path this is no operation
+        cassette_path = Path(cassette_path).resolve()
+
+        cassette_path.parent.mkdir(parents=True, exist_ok=True)
+
+        with cassette_path.open("w", encoding="utf-8", newline="\n") as f:
+            f.write(data)
 
 
 class RecordFilePathBuilder:
@@ -65,6 +79,7 @@ def record_http_context_manager(
                 record_mode="once",
                 **vcr_config,
             )
+            vcr_object.register_persister(VCRFilesystemPersister)
 
             with vcr_object.use_cassette(record_file_path.name) as cassette:
                 yield cassette
@@ -74,6 +89,7 @@ def record_http_context_manager(
                 record_mode="none",
                 **vcr_config,
             )
+            vcr_object.register_persister(VCRFilesystemPersister)
 
             with vcr_object.use_cassette(record_file_path.name) as cassette:
                 yield cassette
