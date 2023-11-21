@@ -1,12 +1,15 @@
 [tool.poetry]
-authors = ["Chavithra PARANA <chavithra@gmail.com>"]
-classifiers = [
-    "Framework :: Pytest",
+authors = [
+    "Chavithra PARANA <chavithra@gmail.com>",
+    "Theodore Aptekarev <piiq@tinag.ru>",
+    "Juan Alfonso <me@tehcoderer.com>",
+    "OpenBB <hello@openbb.co>",
 ]
+classifiers = ["Framework :: Pytest"]
 description = "Pytest plugin, meant to facilitate unit tests writing for tools consumming Web APIs."
 license = "MIT"
 name = "pytest-recorder"
-packages = [{include = "pytest_recorder"}]
+packages = [{ include = "pytest_recorder" }]
 readme = "README.md"
 version = "0.2.4"
 
