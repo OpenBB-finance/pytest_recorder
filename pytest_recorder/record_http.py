@@ -1,4 +1,5 @@
 # IMPORT STANDARD
+import urllib3
 from pathlib import Path
 from typing import Any, Dict
 
@@ -28,7 +29,6 @@ class VCRFilesystemPersister(FilesystemPersister):
     @staticmethod
     def save_cassette(cassette_path, cassette_dict, serializer):
         data = serialize(cassette_dict, serializer)
-        # if cassette path is already Path this is no operation
         cassette_path = Path(cassette_path).resolve()
         cassette_path.parent.mkdir(parents=True, exist_ok=True)
 
@@ -45,7 +45,8 @@ class RecordFilePathBuilder:
         record_file_folder_path = (
             test_module_path.parent / "record" / record_folder_name
         )
-        record_file_name = f"{test_function}.yaml"
+        urllib3_version = urllib3.__version__.split(".")[0]
+        record_file_name = f"{test_function}_urllib3_v{urllib3_version}.yaml"
         record_file_path = record_file_folder_path / test_module / record_file_name
 
         return record_file_path
