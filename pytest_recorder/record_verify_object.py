@@ -155,10 +155,7 @@ class RecordFilePathBuilder:
     @staticmethod
     def build(test_module_path: Path, test_function: str, hash_only: bool) -> Path:
         test_module = test_module_path.stem
-
-        data_folder_name = (
-            f"{RecordType.object}_hash" if hash_only else RecordType.object.name
-        )
+        data_folder_name = "object_hash" if hash_only else RecordType.object.name
         data_file_folder_path = test_module_path.parent / "record" / data_folder_name
         data_file_name = f"{test_function}.json"
         data_file_path = data_file_folder_path / test_module / data_file_name

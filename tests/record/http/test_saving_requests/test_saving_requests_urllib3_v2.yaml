@@ -1,0 +1,200 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://vcrpy.readthedocs.io/en/latest/configuration.html?apikey=MOCK_API_KEY
+  response:
+    body:
+      string: "<!DOCTYPE html>\n\n<html lang=\"en\" data-content_root=\"./\">\n  <head>\n
+        \   <meta charset=\"utf-8\" />\n    <meta name=\"viewport\" content=\"width=device-width,
+        initial-scale=1.0\" /><meta name=\"viewport\" content=\"width=device-width,
+        initial-scale=1\" />\n\n    <title>Configuration &#8212; vcrpy 6.0.0 documentation</title>\n
+        \   <link rel=\"stylesheet\" type=\"text/css\" href=\"_static/pygments.css?v=fa44fd50\"
+        />\n    <link rel=\"stylesheet\" type=\"text/css\" href=\"_static/alabaster.css?v=12dfc556\"
+        />\n    <link rel=\"stylesheet\" type=\"text/css\" href=\"/_/static/css/badge_only.css\"
+        />\n    <script src=\"_static/documentation_options.js?v=12958129\"></script>\n
+        \   <script src=\"_static/doctools.js?v=888ff710\"></script>\n    <script
+        src=\"_static/sphinx_highlight.js?v=dc90522c\"></script>\n    <script async=\"async\"
+        src=\"/_/static/javascript/readthedocs-doc-embed.js\"></script>\n    <link
+        rel=\"index\" title=\"Index\" href=\"genindex.html\" />\n    <link rel=\"search\"
+        title=\"Search\" href=\"search.html\" />\n    <link rel=\"next\" title=\"Advanced
+        Features\" href=\"advanced.html\" />\n    <link rel=\"prev\" title=\"Usage\"
+        href=\"usage.html\" />\n   \n  <link rel=\"stylesheet\" href=\"_static/custom.css\"
+        type=\"text/css\" />\n  \n\n  \n  \n\n  \n<!-- RTD Extra Head -->\n\n<link
+        rel=\"stylesheet\" href=\"/_/static/css/readthedocs-doc-embed.css\" type=\"text/css\"
+        />\n\n<script type=\"application/json\" id=\"READTHEDOCS_DATA\">{\"ad_free\":
+        false, \"api_host\": \"https://readthedocs.org\", \"builder\": \"sphinx\",
+        \"canonical_url\": null, \"docroot\": \"/docs/\", \"features\": {\"docsearch_disabled\":
+        false}, \"global_analytics_code\": \"UA-17997319-1\", \"language\": \"en\",
+        \"page\": \"configuration\", \"programming_language\": \"py\", \"project\":
+        \"vcrpy\", \"proxied_api_host\": \"/_\", \"source_suffix\": \".rst\", \"subprojects\":
+        {}, \"theme\": \"alabaster\", \"user_analytics_code\": \"\", \"version\":
+        \"latest\"}</script>\n\n<!--\nUsing this variable directly instead of using
+        `JSON.parse` is deprecated.\nThe READTHEDOCS_DATA global variable will be
+        removed in the future.\n-->\n<script type=\"text/javascript\">\nREADTHEDOCS_DATA
+        = JSON.parse(document.getElementById('READTHEDOCS_DATA').innerHTML);\n</script>\n\n<script
+        type=\"text/javascript\" src=\"/_/static/javascript/readthedocs-analytics.js\"
+        async=\"async\"></script>\n\n<!-- end RTD <extrahead> -->\n</head><body>\n
+        \ \n\n    <div class=\"document\">\n      <div class=\"documentwrapper\">\n
+        \       <div class=\"bodywrapper\">\n          \n\n          <div class=\"body\"
+        role=\"main\">\n            \n  <section id=\"configuration\">\n<h1>Configuration<a
+        class=\"headerlink\" href=\"#configuration\" title=\"Link to this heading\">\xB6</a></h1>\n<p>If
+        you don\u2019t like VCR\u2019s defaults, you can set options by instantiating
+        a\n<code class=\"docutils literal notranslate\"><span class=\"pre\">VCR</span></code>
+        class and setting the options on it.</p>\n<div class=\"highlight-python notranslate\"><div
+        class=\"highlight\"><pre><span></span><span class=\"kn\">import</span> <span
+        class=\"nn\">vcr</span>\n\n<span class=\"n\">my_vcr</span> <span class=\"o\">=</span>
+        <span class=\"n\">vcr</span><span class=\"o\">.</span><span class=\"n\">VCR</span><span
+        class=\"p\">(</span>\n    <span class=\"n\">serializer</span><span class=\"o\">=</span><span
+        class=\"s1\">&#39;json&#39;</span><span class=\"p\">,</span>\n    <span class=\"n\">cassette_library_dir</span><span
+        class=\"o\">=</span><span class=\"s1\">&#39;fixtures/cassettes&#39;</span><span
+        class=\"p\">,</span>\n    <span class=\"n\">record_mode</span><span class=\"o\">=</span><span
+        class=\"s1\">&#39;once&#39;</span><span class=\"p\">,</span>\n    <span class=\"n\">match_on</span><span
+        class=\"o\">=</span><span class=\"p\">[</span><span class=\"s1\">&#39;uri&#39;</span><span
+        class=\"p\">,</span> <span class=\"s1\">&#39;method&#39;</span><span class=\"p\">],</span>\n<span
+        class=\"p\">)</span>\n\n<span class=\"k\">with</span> <span class=\"n\">my_vcr</span><span
+        class=\"o\">.</span><span class=\"n\">use_cassette</span><span class=\"p\">(</span><span
+        class=\"s1\">&#39;test.json&#39;</span><span class=\"p\">):</span>\n    <span
+        class=\"c1\"># your http code here</span>\n</pre></div>\n</div>\n<p>Otherwise,
+        you can override options each time you use a cassette.</p>\n<div class=\"highlight-python
+        notranslate\"><div class=\"highlight\"><pre><span></span><span class=\"k\">with</span>
+        <span class=\"n\">vcr</span><span class=\"o\">.</span><span class=\"n\">use_cassette</span><span
+        class=\"p\">(</span><span class=\"s1\">&#39;test.yml&#39;</span><span class=\"p\">,</span>
+        <span class=\"n\">serializer</span><span class=\"o\">=</span><span class=\"s1\">&#39;json&#39;</span><span
+        class=\"p\">,</span> <span class=\"n\">record_mode</span><span class=\"o\">=</span><span
+        class=\"s1\">&#39;once&#39;</span><span class=\"p\">):</span>\n    <span class=\"c1\">#
+        your http code here</span>\n</pre></div>\n</div>\n<p>Note: Per-cassette overrides
+        take precedence over the global config.</p>\n<section id=\"request-matching\">\n<h2>Request
+        matching<a class=\"headerlink\" href=\"#request-matching\" title=\"Link to
+        this heading\">\xB6</a></h2>\n<p>Request matching is configurable and allows
+        you to change which requests\nVCR considers identical. The default behavior
+        is\n<code class=\"docutils literal notranslate\"><span class=\"pre\">['method',</span>
+        <span class=\"pre\">'scheme',</span> <span class=\"pre\">'host',</span> <span
+        class=\"pre\">'port',</span> <span class=\"pre\">'path',</span> <span class=\"pre\">'query']</span></code>
+        which means\nthat requests with both the same URL and method (ie POST or GET)
+        are\nconsidered identical.</p>\n<p>This can be configured by changing the
+        <code class=\"docutils literal notranslate\"><span class=\"pre\">match_on</span></code>
+        setting.</p>\n<p>The following options are available :</p>\n<ul>\n<li><p>method
+        (for example, POST or GET)</p></li>\n<li><p>uri (the full URI)</p></li>\n<li><p>scheme
+        (for example, HTTP or HTTPS)</p></li>\n<li><p>host (the hostname of the server
+        receiving the request)</p></li>\n<li><p>port (the port of the server receiving
+        the request)</p></li>\n<li><p>path (the path of the request)</p></li>\n<li><p>query
+        (the query string of the request)</p></li>\n<li><p>raw_body (the entire request
+        body as is)</p></li>\n<li><p>body (the entire request body unmarshalled by
+        content-type\ni.e. xmlrpc, json, form-urlencoded, falling back on raw_body)</p></li>\n<li><p>headers
+        (the headers of the request)</p>\n<p>Backwards compatible matchers:</p>\n</li>\n<li><p>url
+        (the <code class=\"docutils literal notranslate\"><span class=\"pre\">uri</span></code>
+        alias)</p></li>\n</ul>\n<p>If these options don\u2019t work for you, you can
+        also register your own\nrequest matcher. This is described in the Advanced
+        section of this\nREADME.</p>\n</section>\n</section>\n\n\n          </div>\n
+        \         \n        </div>\n      </div>\n      <div class=\"sphinxsidebar\"
+        role=\"navigation\" aria-label=\"main navigation\">\n        <div class=\"sphinxsidebarwrapper\">\n<h3><a
+        href=\"index.html\">Table of Contents</a></h3>\n<ul class=\"current\">\n<li
+        class=\"toctree-l1\"><a class=\"reference internal\" href=\"installation.html\">Installation</a></li>\n<li
+        class=\"toctree-l1\"><a class=\"reference internal\" href=\"usage.html\">Usage</a></li>\n<li
+        class=\"toctree-l1 current\"><a class=\"current reference internal\" href=\"#\">Configuration</a><ul>\n<li
+        class=\"toctree-l2\"><a class=\"reference internal\" href=\"#request-matching\">Request
+        matching</a></li>\n</ul>\n</li>\n<li class=\"toctree-l1\"><a class=\"reference
+        internal\" href=\"advanced.html\">Advanced Features</a></li>\n<li class=\"toctree-l1\"><a
+        class=\"reference internal\" href=\"api.html\">API</a></li>\n<li class=\"toctree-l1\"><a
+        class=\"reference internal\" href=\"debugging.html\">Debugging</a></li>\n<li
+        class=\"toctree-l1\"><a class=\"reference internal\" href=\"contributing.html\">Contributing</a></li>\n<li
+        class=\"toctree-l1\"><a class=\"reference internal\" href=\"changelog.html\">Changelog</a></li>\n</ul>\n<div
+        class=\"relations\">\n<h3>Related Topics</h3>\n<ul>\n  <li><a href=\"index.html\">Documentation
+        overview</a><ul>\n      <li>Previous: <a href=\"usage.html\" title=\"previous
+        chapter\">Usage</a></li>\n      <li>Next: <a href=\"advanced.html\" title=\"next
+        chapter\">Advanced Features</a></li>\n  </ul></li>\n</ul>\n</div>\n  <div
+        role=\"note\" aria-label=\"source link\">\n    <h3>This Page</h3>\n    <ul
+        class=\"this-page-menu\">\n      <li><a href=\"_sources/configuration.rst.txt\"\n
+        \           rel=\"nofollow\">Show Source</a></li>\n    </ul>\n   </div>\n<div
+        id=\"searchbox\" style=\"display: none\" role=\"search\">\n  <h3 id=\"searchlabel\">Quick
+        search</h3>\n    <div class=\"searchformwrapper\">\n    <form class=\"search\"
+        action=\"search.html\" method=\"get\">\n      <input type=\"text\" name=\"q\"
+        aria-labelledby=\"searchlabel\" autocomplete=\"off\" autocorrect=\"off\" autocapitalize=\"off\"
+        spellcheck=\"false\"/>\n      <input type=\"submit\" value=\"Go\" />\n    </form>\n
+        \   </div>\n</div>\n<script>document.getElementById('searchbox').style.display
+        = \"block\"</script>\n        </div>\n      </div>\n      <div class=\"clearer\"></div>\n
+        \   </div>\n    <div class=\"footer\">\n      &#169;2015, Kevin McCarthy.\n
+        \     \n      |\n      Powered by <a href=\"https://www.sphinx-doc.org/\">Sphinx
+        7.2.6</a>\n      &amp; <a href=\"https://alabaster.readthedocs.io\">Alabaster
+        0.7.16</a>\n      \n      |\n      <a href=\"_sources/configuration.rst.txt\"\n
+        \         rel=\"nofollow\">Page source</a>\n    </div>\n\n    \n\n    \n  </body>\n</html>"
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      CF-Cache-Status:
+      - REVALIDATED
+      CF-Ray:
+      - 89a467087b7fb93e-AMS
+      Cache-Control:
+      - max-age=1200
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - text/html; charset=utf-8
+      Date:
+      - Thu, 27 Jun 2024 09:27:39 GMT
+      ETag:
+      - W/"feb83f6ecd57dfc2d70286beab8dd1f6"
+      Last-Modified:
+      - Tue, 23 Jan 2024 16:19:05 GMT
+      Server:
+      - cloudflare
+      Set-Cookie:
+      - _cfuvid=4nbTHGIldyGHAN5NLyE8Dt1ocx8LL44YbncTXDYcYeI-1719480459832-0.0.1.1-604800000;
+        path=/; domain=.readthedocs.io; HttpOnly; Secure; SameSite=None
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      access-control-allow-methods:
+      - HEAD, OPTIONS, GET
+      alt-svc:
+      - h3=":443"; ma=86400
+      cdn-cache-control:
+      - public
+      referrer-policy:
+      - no-referrer-when-downgrade
+      x-amz-id-2:
+      - ujX1DEB22zE+0sWYvbu2Xvr53Gda1TzUYe0iXI1p0adIXOnzwuP9ARq2Mqmk/4HQCObRl+/jHMk=
+      x-amz-meta-mtime:
+      - '1706026742.055308956'
+      x-amz-request-id:
+      - QJ9DTZ0ZPTK6NXZS
+      x-amz-server-side-encryption:
+      - AES256
+      x-backend:
+      - web-i-08ba0f3cf407cbe22
+      x-content-type-options:
+      - nosniff
+      x-rtd-domain:
+      - vcrpy.readthedocs.io
+      x-rtd-path:
+      - /proxito/html/vcrpy/latest/configuration.html
+      x-rtd-project:
+      - vcrpy
+      x-rtd-project-method:
+      - public_domain
+      x-rtd-resolver-filename:
+      - /configuration.html
+      x-rtd-version:
+      - latest
+      x-rtd-version-method:
+      - path
+      x-served:
+      - Nginx-Proxito-Sendfile
+    status:
+      code: 200
+      message: OK
+version: 1
