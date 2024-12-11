@@ -18,6 +18,7 @@ python = "^3.9"
 vcrpy = "^6.0.2"
 urllib3 = "^1.26.19"
 time-machine = "^2.16.0"
+idna = "^3.7"
 
 
 [tool.poetry.group.dev.dependencies]
