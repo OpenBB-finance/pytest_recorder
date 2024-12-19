@@ -1,8 +1,9 @@
 [tool.poetry]
 authors = [
-    "Chavithra PARANA <chavithra@gmail.com>",
+    "Chavithra Parana <chavithra@gmail.com>",
     "Theodore Aptekarev <piiq@tinag.ru>",
     "Juan Alfonso <me@tehcoderer.com>",
+    "Darren Lee <deeleeramone@gmail.com>",
     "OpenBB <hello@openbb.co>",
 ]
 classifiers = ["Framework :: Pytest"]
@@ -11,7 +12,7 @@ license = "MIT"
 name = "pytest-recorder"
 packages = [{ include = "pytest_recorder" }]
 readme = "README.md"
-version = "0.4.0"
+version = "0.4.1"
 
 [tool.poetry.dependencies]
 python = "^3.9"
