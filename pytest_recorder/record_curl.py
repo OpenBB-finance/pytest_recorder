@@ -3,7 +3,6 @@
 from pathlib import Path
 from typing import Any
 from unittest.mock import patch
-
 import yaml
 import pytest
 import vcr
@@ -116,6 +115,7 @@ class CurlCassette:
                 },
             }
             self.captured_requests.append(cassette_entry)
+
             return response
 
         CurlCffiAdapter.send = capture_send
@@ -177,6 +177,18 @@ def record_curl_context_manager(
                 new_parsed = parsed_url._replace(query=new_query)
                 cassette_entry["request"]["uri"] = urlunparse(new_parsed)
 
+            # Handle before_record_response function
+            if "before_record_response" in vcr_config:
+                for filter_func in vcr_config["before_record_response"]:
+                    filtered_response = filter_func(cassette_entry["response"])
+
+                    # If filter returns None, don't record this request at all
+                    if filtered_response is None:
+                        return None  # Don't record this request
+
+                    # Apply the filtered response back to the cassette entry
+                    cassette_entry["response"] = filtered_response
+
             return cassette_entry
 
         # Determine if we should record and create VCR object
@@ -185,11 +197,18 @@ def record_curl_context_manager(
         ):
             record_file_path.unlink(missing_ok=True)
 
+            # Create VCR config without custom filters that VCR doesn't recognize
+            vcr_config_clean = {
+                k: v
+                for k, v in vcr_config.items()
+                if k not in ["before_record_response"]
+            }
+
             # Create VCR object for recording
             vcr_object = vcr.VCR(
                 cassette_library_dir=str(record_file_path.parent),
                 record_mode="once",
-                **vcr_config,
+                **vcr_config_clean,
             )
             vcr_object.register_persister(VCRFilesystemPersister)
 
@@ -205,7 +224,7 @@ def record_curl_context_manager(
                         "method": request.method,
                         "uri": str(request.url),
                         "headers": dict(request.headers),
-                        "body": request.body.decode() if request.body else None,
+                        "body": request.body if request.body else None,
                     },
                     "response": {
                         "status": {
@@ -213,13 +232,23 @@ def record_curl_context_manager(
                             "message": response.reason,
                         },
                         "headers": dict(response.headers),
-                        "body": {"string": response.text, "encoding": "utf-8"},
+                        "body": {
+                            "string": (
+                                response.content
+                                if response.status_code == 200
+                                else None
+                            ),
+                            "encoding": "utf-8",
+                        },
                     },
                 }
+                if cassette_entry["response"]["status"]["code"] == 200:
+                    # Apply VCR config filters
+                    cassette_entry = apply_vcr_filters(cassette_entry, vcr_config)
 
-                # Apply VCR config filters
-                cassette_entry = apply_vcr_filters(cassette_entry, vcr_config)
-                captured_requests.append(cassette_entry)
+                    # Only add to captured_requests if the filter didn't return None
+                    if cassette_entry is not None:
+                        captured_requests.append(cassette_entry)
                 return response
 
             with patch.object(CurlCffiAdapter, "send", capture_send):
