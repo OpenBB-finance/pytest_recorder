@@ -1,0 +1,127 @@
+interactions:
+- args:
+  - '[REDACTED]'
+  - '[REDACTED]'
+  command: login
+  host: 198.55.199.49
+  response: 230 User logged in.
+- args:
+  - symboldirectory
+  command: cwd
+  host: 198.55.199.49
+  response: 250 CWD command successful.
+- body: "Symbol|Security Name|Financial Status\r\nAAPL25A|Apple Inc. 0.000% Notes\
+    \ due 2025|N\r\nAAPL26|Apple Inc. Senior Notes Due 2026|N\r\nAAPL27|Apple Inc.\
+    \ Senior Notes Due 2017|N\r\nAAPL29|Apple Inc. Senior Notes 2029|N\r\nAAPL29A|Apple\
+    \ Inc. Senior Notes Due 29 1.375|N\r\nAAPL31|Apple Inc. 0.500% Notes due 2031|N\r\
+    \nAAPL42|Apple Inc. Senior Notes Due 2042|N\r\nAMGN26|Amgen Inc. 2.000% Senior\
+    \ Notes due 2026|N\r\nAVY34|Avery Dennison Corporation 3.750% Senior Notes due\
+    \ 2034|N\r\nAVY35|Avery Dennison Corporation 4.000% Senior Notes due 2035|N\r\n\
+    AZN25|Astrazeneca PLC 3.375% Notes Due 2025|N\r\nAZN26|Astrazeneca PLC 0.700%\
+    \ Notes due 2026|N\r\nAZN26A|AstraZeneca PLC AstraZeneca Finance LLC $1,250,000,000\
+    \ 1.200% Notes due 2026|N\r\nAZN27A|Astrazeneca PLC 3.125% Notes Due 2027|N\r\n\
+    AZN27B|AstraZeneca PLC AstraZeneca Finance LLC $1,250,000,000 4.800% Notes due\
+    \ 2027|N\r\nAZN28|AstraZeneca PLC AstraZeneca Finance LLC $1,250,000,000 1.750%\
+    \ Notes due 2028|N\r\nAZN28A|AstraZeneca PLC AstraZeneca Finance LLC $1,100,000,000\
+    \ 4.875% Notes due 2028|N\r\nAZN29|Astrazeneca PLC 4.000% Notes Due 2029|N\r\n\
+    AZN29A|AstraZeneca PLC AstraZeneca Finance LLC $1,250,000,000 4.850% Notes due\
+    \ 2029|N\r\nAZN30|Astrazeneca PLC 1.375% Notes due 2030|N\r\nAZN30A|AstraZeneca\
+    \ PLC AstraZeneca Finance LLC $650,000,000 4.900% Notes due 2030|N\r\nAZN31|AstraZeneca\
+    \ PLC AstraZeneca Finance LLC $750,000,000 2.250% Notes due 2031|N\r\nAZN31A|AstraZeneca\
+    \ PLC AstraZeneca Finance LLC $1,000,000,000 4.900% Notes due 2031|N\r\nAZN33|AstraZeneca\
+    \ PLC AstraZeneca Finance LLC $500,000,000 4.875% Notes due 2033|N\r\nAZN34|AstraZeneca\
+    \ PLC AstraZeneca Finance LLC $1,500,000,000 5.000% Notes due 2034|N\r\nAZN37|Astrazeneca\
+    \ PLC 6.450% Notes due 2037|N\r\nAZN42|Astrazeneca PLC 4.000% Notes due 2042|N\r\
+    \nAZN45|Astrazeneca PLC 4.375% Notes due 2045|N\r\nAZN48|Astrazeneca PLC 4.375%\
+    \ Notes due 2048|N\r\nAZN50|Astrazeneca PLC 2.125% Notes Due 2050|N\r\nAZN51|AstraZeneca\
+    \ PLC 3.000% Notes due 2051|N\r\nBKNG26|Booking Holdings Inc. 4.000% Senior Notes\
+    \ due 2026|N\r\nBKNG27|Booking Holdings Inc. Senior Notes due 2027|N\r\nBKNG28|Booking\
+    \ Holdings Inc. 0.500% Senior Notes due 2028|N\r\nBKNG28A|Booking Holdings Inc.\
+    \ 3.625% Senior Unsecured Notes due 2028|N\r\nBKNG29|Booking Holdings Inc. 4.250%\
+    \ Senior Notes due 2029|N\r\nBKNG29A|Booking Holdings Inc. 3.500% Senior Unsecured\
+    \ Notes due 2029|N\r\nBKNG31|Booking Holdings Inc. 4.500% Senior Notes due 2031|N\r\
+    \nBKNG31A|Booking Holdings Inc. 3.125% Senior Unsecured Notes Due 2031|N\r\nBKNG32A|Booking\
+    \ Holdings Inc. 3.250% Senior Notes due 2032|N\r\nBKNG33|Booking Holdings Inc.\
+    \ 4.125% Senior Unsecured Notes due 2033|N\r\nBKNG34|Booking Holdings Inc. 4.750%\
+    \ Senior Notes due 2034|N\r\nBKNG36|Booking Holdings Inc. 3.750% Senior Unsecured\
+    \ Notes due 2036|N\r\nBKNG37|Booking Holdings Inc. 3.750% Senior Notes due 2037|N\r\
+    \nBKNG38|Booking Holdings Inc. 4.125% Senior Unsecured Notes due 2038|N\r\nBKNG44|Booking\
+    \ Holdings Inc. 4.000% Senior Unsecured Notes due 2044|N\r\nBKNG45|Booking Holdings\
+    \ Inc. 3.875% Senior Notes due 2045|N\r\nBKNG46|Booking Holdings Inc. 4.500% Senior\
+    \ Unsecured Notes due 2046|N\r\nBKR40|Baker Hughes Company Baker Hughes Holdings\
+    \ LLC $1,145,657,000 5.125% Senior Notes Due 2040|N\r\nBNKG32|Booking Holdings\
+    \ Inc. 3.625% Senior Unsecured Notes due 2032|N\r\nCMCS26|Comcast Corporation\
+    \ 0.000% Notes due 2026|N\r\nCMCS27|Comcast Corporation Euro Notes due 2027|N\r\
+    \nCMCS29|Comcast Corporation 1.5 Sterling Notes due 2029|N\r\nCMCS29A|Comcast\
+    \ Corporation 0.250% Notes due 2029|N\r\nCMCS32|Comcast Corporation 0.75 Euro\
+    \ Notes due 2032|N\r\nCMCS32A|Comcast Corporation 3.250% Euro Notes due 2032|N\r\
+    \nCMCS36|Comcast Corporation 1.875 Sterling Notes due 2036|N\r\nCMCS36A|Comcast\
+    \ Corporation 3.550% Euro Notes due 2036|N\r\nCMCS40|Comcast Corporation 1.25\
+    \ Euro Notes due 2040|N\r\nCMCS40A|Comcast Corporation 5.250% Sterling Notes due\
+    \ 2040|N\r\nEEFT26|Euronet Worldwide, Inc. 1.375% Senior Notes due 2026|N\r\n\
+    EQIX27|Equinix, Inc. 0.250% Senior Notes due 2027|N\r\nEQIX29|Equinix, Inc. 3.250%\
+    \ Senior Notes due 2029|N\r\nEQIX31|Equinix, Inc. 3.250% Senior Notes due 2031|N\r\
+    \nEQIX33|Equinix, Inc. 1.000% Senior Notes due 2033|N\r\nEQIX33A|Equinix, Inc.\
+    \ 3.650% Senior Notes due 2033|N\r\nEQIX34|Equinix, Inc. 3.625% Senior Notes due\
+    \ 2034|N\r\nEQIX34A|Equinix, Inc. 4.000% Senior Notes due 2034|N\r\nGOOG29|Alphabet\
+    \ Inc. 2.500% Notes due 2029|N\r\nGOOG33|Alphabet Inc. 3.000% Notes due 2033|N\r\
+    \nGOOG37|Alphabet Inc. 3.375% Notes due 2037|N\r\nGOOG45|Alphabet Inc. 3.875%\
+    \ Notes due 2045|N\r\nGOOG54|Alphabet Inc. 4.000% Notes due 2054|N\r\nHON27|Honeywell\
+    \ International Inc. 3.500% Senior Notes due 2027|N\r\nHON28A|Honeywell International\
+    \ Inc. 2.250% Notes due 2028|N\r\nHON30|Honeywell International Inc. 3.375% Senior\
+    \ Notes due 2030|N\r\nHON32|Honeywell International Inc. 0.750% Senior Notes due\
+    \ 2032|N\r\nHON32A|Honeywell International Inc. 3.750% Senior Notes due 2032|N\r\
+    \nHON34|Honeywell International Inc. 4.125% Senior Notes due 2034|N\r\nHON36|Honeywell\
+    \ International Inc. 3.750% Senior Notes due 2036|N\r\nKHC25|Kraft Heinz Foods\
+    \ Company Floating Rate Senior Notes due 2025|S\r\nKHC29|The Kraft Heinz Company\
+    \ Kraft Heinz Foods Company 550,000,000 3.500% senior notes due 2029|N\r\nKHC33|The\
+    \ Kraft Heinz Company 3.250% Senior Notes Due 2033|N\r\nLKQ31|LKQ Corporation\
+    \ 4.125% Notes due 2031|N\r\nMDLZ27|Mondelez International, Inc. 1.625% Notes\
+    \ due 2027|N\r\nMDLZ28|Mondelez International, Inc. 0.250% Notes due 2028|N\r\n\
+    MDLZ33|Mondelez International, Inc. 0.750% Notes due 2033|N\r\nMDLZ35|Mondelez\
+    \ International, Inc. 2.375% Notes due 2035|N\r\nMDLZ35A|Mondelez International,\
+    \ Inc. 4.500% Notes due 2035|N\r\nMDLZ41|Mondelez International, Inc. 1.375% Notes\
+    \ due 2041|N\r\nMDLZ45|Mondelez International, Inc. 3.875% Notes due 2045|N\r\n\
+    MELI26|MercadoLibre, Inc. 2.375% Sustainability Notes due 2026|N\r\nMELI31|MercadoLibre,\
+    \ Inc. 3.125% Notes due 2031|N\r\nMSFT28|Microsoft Corporation 3.125% Notes due\
+    \ 2028|N\r\nMSFT33|Microsoft Corporation 2.625% Notes due 2033|N\r\nNDAQ29|Nasdaq,\
+    \ Inc. 1.75% Senior Notes Due 2029|N\r\nNDAQ30|Nasdaq, Inc. 0.875% Notes due 2030|N\r\
+    \nNDAQ32|Nasdaq, Inc. 4.500% Senior Notes due 2032|N\r\nNDAQ33|Nasdaq, Inc. 0.900%\
+    \ Senior Notes due 2033|N\r\nPCAR26|PACCAR Financial Corp. 1.100% Fixed Medium-Term\
+    \ Note, Series P Due May 11, 2026|N\r\nPEP26|PepsiCo, Inc. Senior Notes Due 2026|N\r\
+    \nPEP27|PepsiCo, Inc. Senior Notes 2027|N\r\nPEP28|PepsiCo, Inc. Senior Notes\
+    \ Due 2028|N\r\nPEP28A|PepsiCo, Inc. 0.500% Senior Notes due 2028|N\r\nPEP29|PepsiCo,\
+    \ Inc. 3.200% Senior Notes due 2029|N\r\nPEP31|PepsiCo, Inc. Senior Notes 2031|N\r\
+    \nPEP32|PepsiCo, Inc. 0.400% Senior Notes due 2032|N\r\nPEP33|PepsiCo, Inc. 0.750%\
+    \ Senior Notes due 2033|N\r\nPEP34|PepsiCo, Inc. 3.550% Senior Notes due 2034|N\r\
+    \nPEP37|PepsiCo, Inc. 3.450% Senior Notes due 2037|N\r\nPEP39|PepsiCo, Inc. Senior\
+    \ Notes due 2039|N\r\nPEP50|PepsiCo, Inc. 1.050% Senior Notes due 2050|N\r\nPEP55|PepsiCo,\
+    \ Inc. 4.050% Senior Notes due 2055|N\r\nTMUS29|T-Mobile US, Inc. 3.550% Senior\
+    \ Notes due 2029|N\r\nTMUS32|T-Mobile US, Inc. 3.700% Senior Notes due 2032|N\r\
+    \nTMUS32A|T-Mobile US, Inc. 3.150% Senior Notes due 2032|N\r\nTMUS36|T-Mobile\
+    \ US, Inc. 3.850% Senior Notes due 2036|N\r\nTMUS37|T-Mobile US, Inc. 3.50% Senior\
+    \ Notes due 2037|N\r\nTMUS45|T-Mobile US, Inc. 3.800% Senior Notes due 2045|N\r\
+    \nTRI26|Thomson Reuters Corp 3.350% Notes due 2026|N\r\nTRI35|Thomson Reuters\
+    \ Corp 5.500% Debentures Due 2035|N\r\nTRI40|Thomson Reuters Corp 5.850% Notes\
+    \ Due 2040|N\r\nTRI43A|Thomson Reuters Corp 4.500% Notes Due 2043|N\r\nTRI43B|Thomson\
+    \ Reuters Corp 5.650% Notes Due 2043|N\r\nVOD28|Vodafone Group Plc 4.375% Notes\
+    \ due May 2028|N\r\nVOD32|Vodafone Group Plc 6.250% Notes due November 2032|N\r\
+    \nVOD37|Vodafone Group Plc 6.150% Notes due February 2037|N\r\nVOD38|Vodafone\
+    \ Group Plc 5.000% Notes due May 2038|N\r\nVOD43|Vodafone Group Plc 4.375% Notes\
+    \ due February 2043|N\r\nVOD48|Vodafone Group Plc 5.25% Notes due May 2048|N\r\
+    \nVOD49|Vodafone Group Plc 4.875% Notes due June 2049|N\r\nVOD50|Vodafone Group\
+    \ Plc 4.25% Notes due September 2050|N\r\nVOD53|Vodafone Group Plc 5.625% Notes\
+    \ due 2/10/2053|N\r\nVOD54|Vodafone Group Plc U.S.$2,000,000,000 5.750% Notes\
+    \ due 2054|N\r\nVOD59|Vodafone Group Plc 5.125%Notes due June 2059|N\r\nVOD63|Vodafone\
+    \ Group Plc 5.750% Notes due 2/10/2063|N\r\nVOD64|Vodafone Group Plc U.S.$1,000,000,000\
+    \ 5.875% Notes due 2064|N\r\nVOD79|Vodafone Group Plc Capital Securities due April\
+    \ 2079|N\r\nVOD81A|Vodafone Group Plc U.S.$500,000,000 NC5.25 Capital Securities\
+    \ Due 2081|N\r\nVOD81B|Vodafone Group Plc U.S.$1,000,000,000 NC10 Capital Securities\
+    \ Due 2081|N\r\nVOD81C|Vodafone Group Plc U.S.$950,000,000 NC30 Capital Securities\
+    \ Due 2081|N\r\nWBDI30|Warner Bros. Discovery, Inc. 4.302% Senior Notes due 2030|N\r\
+    \nWBDI30A|Warner Bros. Discovery, Inc. 4.302% Senior Notes due 2030|N\r\nWBDI33|Warner\
+    \ Bros. Discovery, Inc. 4.693% Senior Notes due 2033|N\r\nWBDI33A|Warner Bros.\
+    \ Discovery, Inc. 4.693% Senior Notes due 2033|N\r\nFile Creation Time: 1010202521:32|||||\r\
+    \n"
+  encoding: utf-8
+  url: ftp://ftp.nasdaqtrader.com/symboldirectory/bondslist.txt

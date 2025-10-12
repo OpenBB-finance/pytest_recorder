@@ -12,30 +12,22 @@ license = "MIT"
 name = "pytest-recorder"
 packages = [{ include = "pytest_recorder" }]
 readme = "README.md"
-version = "0.5.0"
+version = "0.6.0"
 
 [tool.poetry.dependencies]
-python = ">=3.9.21,<4.0"
-cryptography = "^45.0.5"
-vcrpy = [
-    { version = "^6.0.2", markers = "python_version < '3.10'" },
-    { version = "^7.0.0", markers = "python_version >= '3.10'" },
-]
-urllib3 = [
-    { version = "^1.26.20", markers = "python_version < '3.10'" },
-    { version = ">=1.26.20", markers = "python_version >= '3.10'" }
-]
+python = ">=3.10,<4.0"
+cryptography = "^46.0.2"
+vcrpy = "^7.0.0"
+pytest = ">=8.4.1"
+pytest-mock = "^3.15.1"
 time-machine = "^2.16.0"
 idna = "^3.7"
 curl-adapter = "^1"
-
-
-[tool.poetry.group.dev.dependencies]
-pytest = ">=8.4.1"
 black = "^25.1.0"
 pylint = "^3.3.7"
 mypy = "^1.17.0"
-pytest-mock = "^3.12.0"
+
+[tool.poetry.group.dev.dependencies]
 poetry = ">=2.1"
 
 [build-system]
@@ -49,3 +41,4 @@ pytest_recorder_record_curl = "pytest_recorder.record_curl"
 pytest_recorder_record_time = "pytest_recorder.record_time"
 pytest_recorder_record_verify_object = "pytest_recorder.record_verify_object"
 pytest_recorder_record_verify_screen = "pytest_recorder.record_verify_screen"
+pytest_recorder_record_ftp = "pytest_recorder.record_ftp"
