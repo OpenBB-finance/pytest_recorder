@@ -1,0 +1,14 @@
+interactions:
+- args: []
+  command: login
+  host: ftp.nasdaqtrader.com
+  response: 230 User logged in.
+- args:
+  - /censored_dir
+  command: cwd
+  host: ftp.nasdaqtrader.com
+  response: 250 CWD command successful.
+- args: []
+  command: quit
+  host: ftp.nasdaqtrader.com
+  response: 221 Goodbye.

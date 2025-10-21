@@ -1,0 +1,27 @@
+interactions:
+- args: []
+  body: censored
+  command: login
+  encoding: null
+  host: ftp.nasdaqtrader.com
+  response: 230 User logged in.
+- args:
+  - /symboldirectory
+  body: censored
+  command: cwd
+  encoding: null
+  host: ftp.nasdaqtrader.com
+  response: 250 CWD command successful.
+- args:
+  - RETR bondslist.txt
+  body: censored
+  command: retrbinary
+  encoding: utf-8
+  host: ftp.nasdaqtrader.com
+  response: 226 Transfer complete.
+- args: []
+  body: censored
+  command: quit
+  encoding: null
+  host: ftp.nasdaqtrader.com
+  response: 221 Goodbye.

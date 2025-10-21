@@ -8,6 +8,7 @@ Write this code:
 
 ```python
 @pytest.mark.record_curl
+@pytest.mark.record_ftp
 @pytest.mark.record_http
 @pytest.mark.record_time
 @pytest.mark.record_verify_screen
@@ -25,7 +26,7 @@ pytest tests/some_module.py --record
 
 It will:
 
-Save all the Curl and urllib3 requests
+Save all the Curl and urllib3 requests, as well as interactions with `ftplib`.
 
 Save the execution datetime
 
@@ -70,7 +71,7 @@ def test_some_test(record):
 
 USAGE
 
-pytest [FILE] [--record[=none,all,curl,http,object,screen,time]] [--record-no-overwrite] [--record-no-hash]
+pytest [FILE] [--record[=none,all,curl,ftp,http,object,screen,time]] [--record-no-overwrite] [--record-no-hash]
 
 FILES
 
@@ -79,6 +80,8 @@ For a given test_function from test_module, we will have the following files:
 /tests/test_module.py:test_function
 
 /tests/record/curl/test_module/test_function.yaml
+
+/tests/record/ftp/test_module/test_function.yaml
 
 /tests/record/http/test_module/test_function.yaml
 
@@ -91,4 +94,3 @@ For a given test_function from test_module, we will have the following files:
 /tests/record/screen_hash/test_module/test_function.txt/json?
 
 /tests/record/time/test_module/test_function.txt/json?
-

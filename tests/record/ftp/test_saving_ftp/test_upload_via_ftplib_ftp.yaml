@@ -1,0 +1,18 @@
+interactions:
+- args:
+  - '[REDACTED]'
+  - '[REDACTED]'
+  command: login
+  host: ftp.dlptest.com
+  response: 230 Login successful.
+- args:
+  - STOR upload_test.dlp
+  body: pytest-recorder-test
+  command: storbinary
+  encoding: utf-8
+  host: ftp.dlptest.com
+  response: 226 Transfer complete.
+- args: []
+  command: quit
+  host: ftp.dlptest.com
+  response: 221 Goodbye.
