@@ -133,16 +133,24 @@ class PycurlWrapper:
     def perform(self):
         """Execute request and capture response."""
         if HAS_PYCURL:
-            # Inject our capture buffers if user hasn't set them
-            if self._user_write_data is None and self._user_write_function is None:
-                self._curl.setopt(pycurl.WRITEDATA, self._response_body)  # type: ignore[attr-defined]
-            elif self._user_write_function:
-                # Chain user's callback
-                def chained_write(data):
+            # Always chain to capture response body
+            if self._user_write_function:
+                # Chain user's callback function
+                def chained_write_func(data):
                     self._response_body.write(data)
                     return self._user_write_function(data)  # type: ignore[attr-defined]
 
-                self._curl.setopt(pycurl.WRITEFUNCTION, chained_write)  # type: ignore[attr-defined]
+                self._curl.setopt(pycurl.WRITEFUNCTION, chained_write_func)  # type: ignore[attr-defined]
+            elif self._user_write_data:
+                # Chain user's write data buffer
+                def chained_write_data(data):
+                    self._response_body.write(data)
+                    return self._user_write_data.write(data)
+
+                self._curl.setopt(pycurl.WRITEFUNCTION, chained_write_data)  # type: ignore[attr-defined]
+            else:
+                # No user callback, use our buffer
+                self._curl.setopt(pycurl.WRITEDATA, self._response_body)  # type: ignore[attr-defined]
 
             # Capture headers
             self._curl.setopt(
@@ -528,16 +536,183 @@ def record_curl_context_manager(
                     pycurl.Curl = originals["pycurl_curl"]  # type: ignore[attr-defined]
 
         elif record_file_path.exists():
-            # Use existing cassette
-            vcr_object = vcr.VCR(
-                cassette_library_dir=str(record_file_path.parent),
-                record_mode="none",  # type: ignore[attr-defined]
-                **vcr_config,
-            )
-            vcr_object.register_persister(VCRFilesystemPersister)
+            # Playback mode: Use existing cassette
+            # Load the cassette data directly
+            with open(record_file_path, "r") as f:
+                cassette_data = yaml.safe_load(f)
+            interactions = cassette_data.get("interactions", [])
 
-            with vcr_object.use_cassette(record_file_path.name) as cassette:  # type: ignore[attr-defined]
-                yield cassette
+            # Track used interactions to handle multiple requests to same URL
+            used_interactions = []
+
+            def find_matching_interaction(url):
+                """Find an interaction matching the given URL."""
+                # Try to find an unused interaction with matching URL
+                for i, interaction in enumerate(interactions):
+                    if (
+                        i not in used_interactions
+                        and interaction["request"]["uri"] == url
+                    ):
+                        used_interactions.append(i)
+                        return interaction
+
+                # If no exact match found, try matching without query parameters
+                from urllib.parse import urlparse
+
+                parsed_url = urlparse(url)
+                base_url = f"{parsed_url.scheme}://{parsed_url.netloc}{parsed_url.path}"
+
+                for i, interaction in enumerate(interactions):
+                    if i not in used_interactions:
+                        interaction_url = interaction["request"]["uri"]
+                        parsed_interaction = urlparse(interaction_url)
+                        interaction_base = f"{parsed_interaction.scheme}://{parsed_interaction.netloc}{parsed_interaction.path}"
+                        if base_url == interaction_base:
+                            used_interactions.append(i)
+                            return interaction
+
+                # Last resort: return first unused interaction
+                for i, interaction in enumerate(interactions):
+                    if i not in used_interactions:
+                        used_interactions.append(i)
+                        return interaction
+
+                raise RuntimeError(
+                    f"Cassette {record_file_path.name} has no more unused interactions. "
+                    f"Total interactions: {len(interactions)}, all have been used."
+                )
+
+            # Save originals for restoration
+            originals = {}
+            if HAS_CURL_CFFI_SYNC:
+                originals["session_request"] = CurlCffiSession.request
+                originals["module_request"] = curl_cffi.requests.request
+                originals["module_get"] = curl_cffi.requests.get
+                originals["module_post"] = curl_cffi.requests.post
+                originals["module_put"] = curl_cffi.requests.put
+                originals["module_delete"] = curl_cffi.requests.delete
+                originals["module_head"] = curl_cffi.requests.head
+                originals["module_options"] = curl_cffi.requests.options
+                originals["module_patch"] = curl_cffi.requests.patch
+            if HAS_CURL_CFFI_ASYNC:
+                originals["async_session_request"] = CurlCffiAsyncSession.request
+            if HAS_PYCURL:
+                originals["pycurl_curl"] = pycurl.Curl
+
+            # Create mock response class that mimics curl_cffi.requests.Response
+            class MockResponse:
+                def __init__(self, interaction):
+                    self.status_code = interaction["response"]["status"]["code"]
+                    self.reason = interaction["response"]["status"]["message"]
+                    self.headers = interaction["response"]["headers"]
+                    body_data = interaction["response"]["body"]["string"]
+                    self.content = body_data if isinstance(body_data, bytes) else b""
+                    self.text = (
+                        body_data.decode("utf-8")
+                        if isinstance(body_data, bytes)
+                        else ""
+                    )
+                    self.url = interaction["request"]["uri"]
+
+                def raise_for_status(self):
+                    """Raise an exception if the response status indicates an error."""
+                    if 400 <= self.status_code < 600:
+                        raise Exception(f"HTTP {self.status_code}: {self.reason}")
+
+                def json(self):
+                    """Parse response content as JSON."""
+                    import json
+
+                    return json.loads(self.text)
+
+            # Patch curl_cffi functions to return mock responses
+            def mock_session_request(self, method, url, **kwargs):
+                interaction = find_matching_interaction(url)
+                return MockResponse(interaction)
+
+            async def mock_async_session_request(self, method, url, **kwargs):
+                interaction = find_matching_interaction(url)
+                return MockResponse(interaction)
+
+            def create_mock_module_wrapper(http_method):
+                def wrapper(url, **kwargs):
+                    interaction = find_matching_interaction(url)
+                    return MockResponse(interaction)
+
+                return wrapper
+
+            def mock_module_request(method, url, **kwargs):
+                interaction = find_matching_interaction(url)
+                return MockResponse(interaction)
+
+            # Patch pycurl
+            class MockPycurlCurl:
+                def __init__(self):
+                    self._url = None
+                    self._write_data = None
+                    self._interaction = None
+
+                def setopt(self, option, value):
+                    if HAS_PYCURL and option == pycurl.URL:
+                        self._url = value
+                    elif HAS_PYCURL and option == pycurl.WRITEDATA:
+                        self._write_data = value
+
+                def perform(self):
+                    if self._url:
+                        self._interaction = find_matching_interaction(self._url)
+                    if self._write_data and self._interaction:
+                        body = self._interaction["response"]["body"]["string"]
+                        if isinstance(body, bytes):
+                            self._write_data.write(body)
+
+                def getinfo(self, info):
+                    if (
+                        HAS_PYCURL
+                        and info == pycurl.RESPONSE_CODE
+                        and self._interaction
+                    ):
+                        return self._interaction["response"]["status"]["code"]
+                    return None
+
+                def close(self):
+                    pass
+
+            try:
+                # Apply playback patches
+                if HAS_CURL_CFFI_SYNC:
+                    CurlCffiSession.request = mock_session_request  # type: ignore[attr-defined]
+                    curl_cffi.requests.request = mock_module_request
+                    curl_cffi.requests.get = create_mock_module_wrapper("GET")
+                    curl_cffi.requests.post = create_mock_module_wrapper("POST")
+                    curl_cffi.requests.put = create_mock_module_wrapper("PUT")
+                    curl_cffi.requests.delete = create_mock_module_wrapper("DELETE")
+                    curl_cffi.requests.head = create_mock_module_wrapper("HEAD")
+                    curl_cffi.requests.options = create_mock_module_wrapper("OPTIONS")
+                    curl_cffi.requests.patch = create_mock_module_wrapper("PATCH")
+                if HAS_CURL_CFFI_ASYNC:
+                    CurlCffiAsyncSession.request = mock_async_session_request  # type: ignore[attr-defined]
+                if HAS_PYCURL:
+                    pycurl.Curl = MockPycurlCurl  # type: ignore[attr-defined]
+
+                yield None  # No cassette object in playback mode
+
+            finally:
+                # Restore originals
+                if HAS_CURL_CFFI_SYNC:
+                    CurlCffiSession.request = originals["session_request"]  # type: ignore[attr-defined]
+                    curl_cffi.requests.request = originals["module_request"]
+                    curl_cffi.requests.get = originals["module_get"]
+                    curl_cffi.requests.post = originals["module_post"]
+                    curl_cffi.requests.put = originals["module_put"]
+                    curl_cffi.requests.delete = originals["module_delete"]
+                    curl_cffi.requests.head = originals["module_head"]
+                    curl_cffi.requests.options = originals["module_options"]
+                    curl_cffi.requests.patch = originals["module_patch"]
+                if HAS_CURL_CFFI_ASYNC:
+                    CurlCffiAsyncSession.request = originals["async_session_request"]  # type: ignore[attr-defined]
+                if HAS_PYCURL:
+                    pycurl.Curl = originals["pycurl_curl"]  # type: ignore[attr-defined]
         else:
             raise AttributeError(
                 f"No comparison possible since there is no curl cassette: {record_file_path}",
