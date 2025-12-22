@@ -1,0 +1,21 @@
+interactions:
+- request:
+    body: null
+    headers: {}
+    method: GET
+    uri: https://httpbin.org/get?apikey=MOCK_API_KEY
+  response:
+    body:
+      encoding: utf-8
+      string: !!binary ""
+    headers:
+      access-control-allow-credentials: 'true'
+      access-control-allow-origin: '*'
+      content-length: '380'
+      content-type: application/json
+      date: Mon, 22 Dec 2025 04:23:44 GMT
+      server: gunicorn/19.9.0
+    status:
+      code: 200
+      message: OK
+  source_type: pycurl

@@ -12,7 +12,7 @@ license = "MIT"
 name = "pytest-recorder"
 packages = [{ include = "pytest_recorder" }]
 readme = "README.md"
-version = "0.6.1"
+version = "0.6.2"
 
 [tool.poetry.dependencies]
 python = ">=3.10,<4.0"
@@ -22,10 +22,17 @@ pytest = ">=8.4.1"
 pytest-mock = "^3.15.1"
 time-machine = "^2.16.0"
 idna = "^3.7"
-curl-adapter = "^1"
+# Optional CURL support
+curl-adapter = { version = "^1", optional = true }
+curl-cffi = { version = ">=0.11.0", optional = true }
+pycurl = { version = ">=7.45.5", optional = true }
+# Dev tools
 black = "^25.1.0"
 pylint = "^3.3.7"
 mypy = "^1.17.0"
+
+[tool.poetry.extras]
+curl = ["curl-adapter", "curl-cffi", "pycurl"]
 
 [tool.poetry.group.dev.dependencies]
 poetry = ">=2.1"
