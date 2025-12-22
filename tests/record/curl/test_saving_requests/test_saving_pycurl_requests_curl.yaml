@@ -1,0 +1,28 @@
+interactions:
+- request:
+    body: null
+    headers: {}
+    method: GET
+    uri: https://httpbin.org/get?apikey=MOCK_API_KEY
+  response:
+    body:
+      encoding: utf-8
+      string: !!binary |
+        ewogICJhcmdzIjogewogICAgImFwaWtleSI6ICIxMjMiCiAgfSwgCiAgImhlYWRlcnMiOiB7CiAg
+        ICAiQWNjZXB0IjogIiovKiIsIAogICAgIkhvc3QiOiAiaHR0cGJpbi5vcmciLCAKICAgICJVc2Vy
+        LUFnZW50IjogIlB5Y1VSTC83LjQ1LjcgbGliY3VybC84LjE1LjAtREVWIE9wZW5TU0wvMy41LjIg
+        emxpYi8xLjMuMSBicm90bGkvMS4xLjAgbGlic3NoMi8xLjExLjFfREVWIG5naHR0cDIvMS42Ny4w
+        IiwgCiAgICAiWC1BbXpuLVRyYWNlLUlkIjogIlJvb3Q9MS02OTQ4ZDA3My02ODViOWFiMzMyOGYy
+        ZTQxMGJiYWVlMzUiCiAgfSwgCiAgIm9yaWdpbiI6ICIzOC4xOTIuMi43MiIsIAogICJ1cmwiOiAi
+        aHR0cHM6Ly9odHRwYmluLm9yZy9nZXQ/YXBpa2V5PTEyMyIKfQo=
+    headers:
+      access-control-allow-credentials: 'true'
+      access-control-allow-origin: '*'
+      content-length: '380'
+      content-type: application/json
+      date: Mon, 22 Dec 2025 05:00:35 GMT
+      server: gunicorn/19.9.0
+    status:
+      code: 200
+      message: OK
+  source_type: pycurl
