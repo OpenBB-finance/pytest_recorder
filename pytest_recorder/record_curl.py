@@ -369,7 +369,7 @@ def record_curl_context_manager(
             vcr_config_clean = {
                 k: v
                 for k, v in vcr_config.items()
-                if k not in ["before_record_response"]
+                if k not in ["before_record_response", "allow_playback_repeats"]
             }
 
             # Create VCR object for recording
@@ -542,19 +542,23 @@ def record_curl_context_manager(
                 cassette_data = yaml.safe_load(f)
             interactions = cassette_data.get("interactions", [])
 
+            # Check if playback repeats are allowed (interactions can be reused)
+            allow_playback_repeats = vcr_config.get("allow_playback_repeats", False)
+
             # Track used interactions to handle multiple requests to same URL
             used_interactions = []
 
             def find_matching_interaction(url):
                 """Find an interaction matching the given URL."""
-                # Try to find an unused interaction with matching URL
+                # Try to find a matching interaction (unused first, then any if repeats allowed)
                 for i, interaction in enumerate(interactions):
-                    if (
-                        i not in used_interactions
-                        and interaction["request"]["uri"] == url
-                    ):
-                        used_interactions.append(i)
-                        return interaction
+                    if interaction["request"]["uri"] == url:
+                        if i not in used_interactions:
+                            used_interactions.append(i)
+                            return interaction
+                        elif allow_playback_repeats:
+                            # Allow reusing this interaction
+                            return interaction
 
                 # If no exact match found, try matching without query parameters
                 from urllib.parse import urlparse
@@ -563,19 +567,26 @@ def record_curl_context_manager(
                 base_url = f"{parsed_url.scheme}://{parsed_url.netloc}{parsed_url.path}"
 
                 for i, interaction in enumerate(interactions):
-                    if i not in used_interactions:
-                        interaction_url = interaction["request"]["uri"]
-                        parsed_interaction = urlparse(interaction_url)
-                        interaction_base = f"{parsed_interaction.scheme}://{parsed_interaction.netloc}{parsed_interaction.path}"
-                        if base_url == interaction_base:
+                    interaction_url = interaction["request"]["uri"]
+                    parsed_interaction = urlparse(interaction_url)
+                    interaction_base = f"{parsed_interaction.scheme}://{parsed_interaction.netloc}{parsed_interaction.path}"
+                    if base_url == interaction_base:
+                        if i not in used_interactions:
                             used_interactions.append(i)
                             return interaction
+                        elif allow_playback_repeats:
+                            # Allow reusing this interaction
+                            return interaction
 
-                # Last resort: return first unused interaction
+                # Last resort: return first unused interaction, or any if repeats allowed
                 for i, interaction in enumerate(interactions):
                     if i not in used_interactions:
                         used_interactions.append(i)
                         return interaction
+
+                # If repeats allowed and we have interactions, return the first one
+                if allow_playback_repeats and interactions:
+                    return interactions[0]
 
                 raise RuntimeError(
                     f"Cassette {record_file_path.name} has no more unused interactions. "
