@@ -12,11 +12,11 @@ license = "MIT"
 name = "pytest-recorder"
 packages = [{ include = "pytest_recorder" }]
 readme = "README.md"
-version = "0.6.4"
+version = "0.6.5"
 
 [tool.poetry.dependencies]
 python = ">=3.10,<4.0"
-cryptography = "^46.0.5"
+cryptography = "^46.0.6"
 vcrpy = { version = ">=7", markers = "platform_python_implementation == 'CPython'" }
 pytest = ">=8.4.1"
 pytest-mock = "^3.15.1"
@@ -33,7 +33,7 @@ mypy = "^1.17.0"
 curl = ["curl-cffi", "pycurl"]
 
 [tool.poetry.group.dev.dependencies]
-poetry = ">=2.1"
+poetry = ">=2.3.3"
 
 [build-system]
 requires = ["poetry-core"]
